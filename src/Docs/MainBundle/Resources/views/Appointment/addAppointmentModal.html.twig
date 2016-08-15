@@ -1,0 +1,38 @@
+<!-- Modal -->
+<div class="modal fade" id="makeAppointment" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">
+                    {{ 'Make an appointment: ' }}
+                    <i>{{  "M.D." }} <span id="MDName"></span></i>
+                </h4>
+            </div>
+            <div class="modal-body">
+                {{ form_start(appointmentForm, {'attr': {'id': 'appointmentForm'}}) }}
+                <fieldset class="form-group">
+                    {{ form_row(appointmentForm.scheduled.date, {'attr': {'class': 'datepicker', 'readonly' : 'readonly'}}) }}
+                    {{ form_row(appointmentForm.scheduled.time) }}
+                    {{ form_row(appointmentForm.noHealthInsurance) }}
+                </fieldset>
+                <fieldset disabled>
+                      <div class="form-group">
+                          {{ form_row(appointmentForm.withUser) }}
+                      </div>
+                </fieldset>
+                <fieldset class="form-group">
+                      {{ form_row(appointmentForm.symptoms, {'attr': {'class' : 'selectpicker', 'data-style' : 'btn-grid-filter'}}) }}
+                </fieldset>
+                <fieldset class="form-group">
+                      {{ form_row(appointmentForm.content, {'attr': {'placeholder' : 'Write specific complains'}}) }}
+                </fieldset>
+                <input type="hidden" name="url" id="appUrl" value='' />
+                  {{ form_end(appointmentForm) }}
+                <span id="appError" class="text-danger"></span>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>

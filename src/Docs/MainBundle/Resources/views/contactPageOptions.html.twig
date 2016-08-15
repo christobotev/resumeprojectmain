@@ -1,0 +1,70 @@
+<div id="accordion" class="panel-group">
+    {# checks which panel should be collapsed based on errors #}
+    {# unfortunately we can't get all errors for each form without error-bubbling #}
+    {# and we don't want to use error-bubbling#}
+
+    {% if not reminderForm.vars.valid %}
+        {% set collapseReminder = true %}
+    {% endif %}
+
+    {% if not appointmentForm.vars.valid %}
+        {% set collapseAppointment = true %}
+    {% endif %}
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h2 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-appointment" aria-expanded="true">{{ 'Appointment' | trans }} <span class="toggle"></span></a>
+            </h2>
+        </div>
+        <div id="collapse-appointment" class="panel-collapse collapse {% if collapseReminder is not defined %}{{ 'in' }}{% endif %}">
+            <div class="panel-body">
+                {% if collapseAppointment is defined %}
+                        {# due to separation of the datetime field check is required#}
+                        {% for error in appointmentForm.scheduled.vars.errors %}
+                            <i style="color: DarkRed">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                {{ error.message }}
+                        {% endfor %}
+                        </i>
+                {% endif %}
+                    {{ form_start(appointmentForm, {'attr': {'id': 'appointmentForm'}}) }}
+                    <fieldset class="form-group">
+                        {{ form_row(appointmentForm.scheduled.date, {'attr': {'class': 'datepicker', 'readonly' : 'readonly'}}) }}
+                        {{ form_row(appointmentForm.scheduled.time) }}
+                        {{ form_row(appointmentForm.noHealthInsurance) }}
+                        {{ form_row(appointmentForm.withUser) }}
+                        {{ form_row(appointmentForm.symptoms, {'attr': {'class' : 'selectpicker', 'data-style' : 'btn-grid-filter'}}) }}
+                        {{ form_row(appointmentForm.content, {'attr': {'placeholder' : 'Write specific complains'}}) }}
+                    </fieldset>
+                  {{ form_end(appointmentForm) }}
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h2 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-reminder" aria-expanded="false">{{ 'Reminder' | trans }} <span class="toggle"></span></a>
+            </h2>
+        </div>
+        <div id="collapse-reminder" class="panel-collapse collapse {% if collapseReminder is defined %}{{ 'in' }}{% endif %}">
+            <div class="panel-body">
+                {% if collapseReminder is defined %}
+                        {# due to separation of the datetime field check is required#}
+                        {% for error in reminderForm.datetime.vars.errors %}
+                            <i style="color: DarkRed">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                {{ error.message }}
+                        {% endfor %}
+                        </i>
+                {% endif %}
+                {{ form_start(reminderForm, {'attr': {'id': 'reminderForm'}}) }}
+                {{ form_row(reminderForm.datetime, {'attr': {'class': 'datepicker', 'readonly' : 'readonly'}}) }}
+                {{ form_row(reminderForm.md) }}
+                {{ form_row(reminderForm.note, {'attr': {'placeholder' : 'Note to self'}}) }}
+                {{ form_end(reminderForm) }}
+            </div>
+        </div>
+    </div>
+</div>

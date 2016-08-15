@@ -1,0 +1,89 @@
+hwi_oauth_login:
+    resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
+    prefix:   /login_oauth
+
+hwi_oauth_redirect:
+    resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
+    prefix:   /connect
+
+hwi_oauth_connect:
+    resource: "@HWIOAuthBundle/Resources/config/routing/connect.xml"
+
+google_login:
+    path: /login/check-google
+
+login:
+    path: /login
+    defaults: { _controller: "AuthBundle:Login:login"}
+
+loginCheck:
+    path: /loginCheck
+    defaults: { _controller: "AuthBundle:Login:loginCheck"}
+
+registerUser:
+    path: /register
+    defaults: {_controller: "AuthBundle:Registration:register"}
+
+main:
+    path: /
+    defaults: { _controller: "MainBundle:Default:index"}
+
+logout:
+    path: /logout
+    defaults: { _controller: "AuthBundle:Security:logout"}
+
+listReminders:
+    path: /listReminders
+    defaults: { _controller: "MainBundle:Reminders:list"}
+
+pickDoctor:
+    path: /pickDoctor
+    defaults: { _controller: "MainBundle:Users:listAvailable"}
+
+manageAppointments:
+    path: /appointments
+    defaults: { _controller: "MainBundle:Appointments:list"}
+
+closedAppointments:
+    path: /closedAppointments
+    defaults: { _controller: "MainBundle:Appointments:listClosed"}
+
+listDoctors:
+    path: /listDocs
+    defaults: { _controller: "MainBundle:Users:listAll"}
+
+listDoctorsGrid:
+    path: /listDocsGrid
+    defaults: { _controller: "MainBundle:Users:listAllGrid"}
+
+exportApps:
+    path: /exportApps
+    defaults: {_controller: "MainBundle:AppointmentsExport:export"}
+
+addAppointment:
+    path: /addAppointment
+    defaults: {_controller: "MainBundle:Appointments:addAppointmentModal"}
+
+listDocuments:
+    path: /documents
+    defaults: {_controller: "MainBundle:Documents:listDocuments"}
+
+docMain:
+    path: /docProfile/{userID}
+    defaults: {_controller: "MainBundle:ProfilePage:index"}
+
+listRating:
+    path: /rating/{userID}
+    defaults: {_controller: "MainBundle:Rating:list"}
+
+addRating:
+    path: /addRating
+    defaults: {_controller: "MainBundle:Rating:save"}
+
+toApprove:
+    path: /approveAppointment
+    defaults: {_controller: "MainBundle:AppointmentUpdate:approve"}
+
+toClose:
+    path: /closeAppointment
+    defaults: {_controller: "MainBundle:AppointmentUpdate:close"}

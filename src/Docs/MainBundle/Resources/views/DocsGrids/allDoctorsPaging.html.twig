@@ -1,0 +1,88 @@
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        initAllDoctorsPaginator({
+            pages : {{ (usersCount / 10) | round(0, "ceil") }},
+            currentPage : {{ currentPage }},
+            next : "{{ 'Next' | trans }} &raquo;",
+            prev : "&laquo; {{ 'Previous' | trans }}",
+            url : "{{ path("listDoctorsGrid") }}",
+            error: "{{ "Couldn't get users information" | trans }}"
+        });
+    });
+</script>
+
+<div class="activeGrid">
+{% embed 'MainBundle:GridRest:basicRestGrid.html.twig' %}
+
+    {% block filters %}
+    <!-- Whenever new filter is applied, start from listDoctors and keep the filter for the pagination -->
+    <form class="form-inline grid-filter" action="{{ path('listDoctors') }}" method="GET">
+
+        <div class="form-group">
+            <label>{{ 'Name' | trans }}</label>
+            <input class="form-control" id="allDoctorsNameFilter" type="text" name="name"
+            {% if app.request.get('name') %} value="{{ app.request.get('name') }}" {% endif %}
+            >
+        </div>
+
+        <div class="pull-right">
+            <button class="btn btn-primary" id="filterButton">
+                {{ "Filter" | trans }}
+            </button>
+            <a href="{{ path(app.request.attributes.get('_route')) }}" class="btn btn-default" id="resetFilterButton">
+                {{ "Reset" | trans }}
+            </a>
+        </div>
+
+    </form>
+    {% endblock %}
+
+    {% block tableData %}
+    <div id="allDoctorsTable">
+        <table class="table table-striped table-hover">
+
+            <!-- Table Head -->
+            <thead>
+                <tr>
+                    <th>{{ 'Doc ID #' }}</th>
+                    <th>{{ 'First name' }}</th>
+                    <th>{{ 'Last name' }}</th>
+                    <th>{{ 'Speciality' }}</th>
+                    <th>{{ 'Rating' }}</th>
+                    <th>{{ 'Date joined' }}</th>
+                    <th width="10px">{{ 'More info' }}</th>
+                </tr>
+            </thead>
+
+            <!-- Table Body -->
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    {% autoescape 'html' %}
+                    <td>{{ user.userID }}</td>
+                    <td>{{ user.firstName }}</td>
+                    <td>{{ user.lastName }}</td>
+                    <td>{{ 'empty' }}</td>
+                    <td>
+						{{ 'new rating' }}
+                    <td>{{ user.created | localizedate('medium', 'none') }}</td>
+                    {% endautoescape %}
+                    <td>
+                        <a href="{{ path("docMain", {"userID" : user.userID}) }}">
+                            <span data-content="Go to  the M.D. Profile" rel="popover" data-placement="bottom" data-trigger="hover" class="glyphicon glyphicon-home docProfilePopover"></span>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+    {% endblock %}
+
+    {% block pagination %}
+        <div id="allDoctorsPagination"></div>
+    {% endblock %}
+
+{% endembed %}
+</div>

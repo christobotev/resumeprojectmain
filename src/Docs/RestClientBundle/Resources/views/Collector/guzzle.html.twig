@@ -1,0 +1,57 @@
+{% extends 'WebProfilerBundle:Profiler:layout.html.twig' %}
+
+{% block head %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        function toggleResponseBlock(index) {
+            var el = document.getElementById("rpr_" + index);
+            el.style.display = el.style.display == "none" ? "block" : "none";
+        }
+    </script>
+{% endblock %}
+
+{% block menu %}
+    <span class="label">
+        <span class="icon">
+            <svg width="30" height="27" viewBox="5 0 23 30" >
+                <g transform="scale(0.03125 0.03125)">
+                    <path d="M512 1024c282.77 0 512-229.23 512-512s-229.23-512-512-512-512 229.23-512 512 229.23 512 512 512zM512 96c229.75 0 416 186.25 416 416s-186.25 416-416 416-416-186.25-416-416 186.25-416 416-416zM256 320c0-35.346 28.654-64 64-64s64 28.654 64 64c0 35.346-28.654 64-64 64s-64-28.654-64-64zM640 320c0-35.346 28.654-64 64-64s64 28.654 64 64c0 35.346-28.654 64-64 64s-64-28.654-64-64zM768 576v64h-64v96c0 53.020-42.98 96-96 96s-96-42.98-96-96v-96h-256v-64h512z" />
+                </g>
+            </svg>
+        </span>
+        <strong>REST Requests</strong>
+    </span>
+{% endblock %}
+
+{% block panel %}
+    <h2>List of rest requests</h2>
+
+    <table>
+        <tr>
+            <th>Client Class</th>
+            <th>Url</th>
+            <th>Request Body</th>
+            <th>Response</th>
+            <th>Timeout</th>
+        </tr>
+
+        {% for req in collector.data.rest_client %}
+            <tr>
+                <td>{{ req['clientClass'] }}</td>
+                <td><a href="{{ req['requestUrl'] }}">{{ req['requestUrl'] }}</a></td>
+                <td>{{ req['requestBody'] }}</td>
+                <td>
+                    <a onclick="toggleResponseBlock({{ loop.index }}); return false;" href="#">
+                        <h3>Show response</h3>
+                    </a>
+                    <div id="rpr_{{ loop.index }}" style="display: none;">
+                        <br />
+                        {{ req['responseBody'] }}
+                    </div>
+                </td>
+                <td>{{ req['time'] }} ms</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

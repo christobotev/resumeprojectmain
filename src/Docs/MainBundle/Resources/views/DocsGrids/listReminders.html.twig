@@ -1,0 +1,71 @@
+{% extends 'MainBundle:Default:index.html.twig' %}
+
+{% block content %}
+    {% embed 'MainBundle:Grid:basicGrid.html.twig' %}
+        {% block filters %}
+        <!-- Search -->
+        <form class="form-inline grid-filter" action="{{ path(app.request.attributes.get('_route')) }}" method="get" id="docsFilter">
+
+            <div class="form-group">
+                <label>{{ 'Reminder from' }}</label>
+                <input class="datepicker form-control" type="text" name="reminderFrom"
+                {% if app.request.get('reminderFrom') %} value="{{ app.request.get('reminderFrom') }}" {% endif %}
+                >
+            </div>
+
+            <div class="form-group">
+                <label>{{ 'Reminder to' }}</label>
+                <input class="datepicker form-control" type="text" name="reminderTo"
+                {% if app.request.get('reminderTo') %} value="{{ app.request.get('reminderTo') }}" {% endif %}
+                >
+            </div>
+
+            <div class="pull-right">
+                <button class="btn btn-primary" id="filterButton">
+                    {{ "Filter" | trans }}
+                </button>
+                <a href="{{ path(app.request.attributes.get('_route')) }}" class="btn btn-default" id="resetFilterButton">
+                    {{ "Reset" | trans }}
+                </a>
+            </div>
+
+        </form>
+        {% endblock %}
+
+        {% block tableData %}
+        <table class="table table-striped table-hover">
+
+            <!-- Table Head -->
+            <thead>
+                <tr>
+                    <th>{{ 'Reminder with:' }}</th>
+                    <th>{{ 'Created' }}</th>
+                    <th>{{ 'Scheduled:' }}</th>
+                    <th>{{ 'Note' }}</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <!-- Table Body -->
+            <tbody>
+                {% for reminder in reminders %}
+                <tr>
+                    {% autoescape 'html' %}
+                    <td>{{ reminder.user }}</td>
+                    <td>{{ reminder.created.date | localizeddate('medium', 'short') }}</td>
+                    <td>{{ reminder.scheduled.date | localizeddate('medium', 'short') }}</td>
+                    <td>{{ reminder.note }}</td>
+                    {% endautoescape %}
+                    <td>
+                        <a href="{{ path("docMain", {"userID" : reminder.userID}) }}">
+                            <span data-content="Go to  the M.D. Profile" rel="popover" data-placement="bottom" data-trigger="hover" class="glyphicon glyphicon-home docProfilePopover"></span>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

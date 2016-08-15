@@ -1,0 +1,30 @@
+services:
+  rest_client.xmlParser:
+    class: Docs\RestClientBundle\Serializer\Encoder\DocsXmlEncoder
+
+  rest_client.jsonParser:
+    class: Symfony\Component\Serializer\Encoder\JsonEncoder
+
+  rest_client.responseInetrnalSerializer:
+    class: Symfony\Component\Serializer\Serializer
+    arguments:
+      - []
+      - ['@rest_client.xmlParser', '@rest_client.jsonParser']
+
+  rest_clinet.responseSerializer:
+    class: Docs\RestClientBundle\Serializer\ResponseSerializer
+    arguments: ['@rest_client.responseInetrnalSerializer']
+    calls:
+      - [addContentTypeAlias, ['xml', 'application/xml']]
+      - [addContentTypeAlias, ['xml', 'text/xml']]
+      - [addContentTypeAlias, ['json', 'application/json']]
+
+  rest_client.dataListener:
+    class: Docs\RestClientBundle\EventListener\GuzzleListener
+    arguments: ['@debug.stopwatch']
+
+  rest_client.data_collector:
+        class:  Docs\RestClientBundle\DataCollector\RestClientDataCollector
+        tags:
+            - { name: data_collector, template: 'RestClientBundle:Collector:guzzle', id: rest_client }
+        arguments: ['@rest_client.dataListener']

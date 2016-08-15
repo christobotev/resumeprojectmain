@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <!-- Settings -->
+    <meta charset="utf-8">
+    <meta http-equiv="cleartype" content="on">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+
+    <!-- Title -->
+    <title>Docs.org</title>
+
+    <!-- Icons - http://realfavicongenerator.net -->
+    <link rel="icon" href="{{ asset('favicon.ico') }}">
+
+    <!-- JAVASCRIPT -->
+    {% block javascripts %}
+    <script src="{{ asset('/scripts/js/jquery.js') }}"> </script>
+    <script src="{{ asset('/scripts/js/jquery-ui.min.js') }}"> </script>
+    <script src="{{ asset('/scripts/js/bootstrap.min.js') }}"> </script>
+    <script src="{{ asset('/scripts/js/grid.js') }}"> </script>
+
+    {% endblock %}
+
+	<script type="text/javascript">
+        jQuery(document).ready(function() {
+            jQuery.datepicker.setDefaults(
+                {dateFormat: 'yy-mm-dd'}
+            );
+
+            jQuery(".datepicker").datepicker();
+        });
+    </script>
+
+    <!-- Custom scripts -->
+    {% block customscripts %} {% endblock %}
+
+    {% block stylesheets %}
+    <link href="{{ asset('/scripts/css/styles.css') }}" rel="stylesheet">
+    <link href="{{ asset('/scripts/css/jquery-ui.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('/scripts/css/bootstrap.min.css') }}" rel="stylesheet">
+	<link href="{{ asset('/scripts/font-awesome-4.6.1/css/font-awesome.min.css') }}" rel="stylesheet">
+    {% endblock %}
+
+    {% block head %}{% endblock %}
+
+</head>
+
+{% if  app.request.attributes.get('_route') != '' %}
+{% set currentPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
+{% else %}
+{% set currentPath = "/" %}
+{% endif %}
+<body>
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="user pull-left">
+                        <span>
+                            {{ 'Find us on:' | trans }}
+                        </span>
+                        <a> <i class="fa fa-facebook"></i> </a><span class="pipe">|</span>
+                        <a> <i class="fa fa-twitter"></i> </a><span class="pipe">|</span>
+                        <a> <i class="fa fa-linkedin"></i> </a><span class="pipe">|</span>
+                    </div>
+                    <div class="user pull-right">
+
+                        <span>{{ 'Welcome,'}} </span>
+                        <a class="username" href="#">{{ app.user.getUsername() }}</a>.
+
+                        {%  if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <span>
+                            {{ 'Reminders:' | trans }}
+                            {% set remindersCount =  open_reminders_count() %}
+                            {% set currentDate = "" | localizeddate('medium', 'medium') %}
+                            <a class="reminders-count {% if  remindersCount > 0 %} label label-danger{% endif %}" href="{{ path("listReminders", {"reminderTo" : currentDate}) }}">{{ remindersCount }}</a>
+                        </span>
+                        {% endif %}
+
+                        <span class="pipe">|</span>
+
+                        <a class="logout" href="/logout">{{ 'Logout' | trans }}</a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- MENU -->
+    {% include 'MainBundle:Default:menu.html.twig' %}
+
+    <!-- MAIN -->
+    <main id="main">
+            <div class="container-fluid">
+                <div class="row">
+
+                    <div class="flash-messages">
+                        {% for flashMessage in app.session.flashbag.get('notice') %}
+                            <div class="alert alert-warning">
+                                {{ flashMessage }}
+                            </div>
+                        {% endfor %}
+                        {% for flashMessage in app.session.flashbag.get('error') %}
+                            <div class="alert alert-danger">
+                                {{ flashMessage }}
+                            </div>
+                        {% endfor %}
+                        {% for flashMessage in app.session.flashbag.get('success') %}
+                            <div class="alert alert-success">
+                                {{ flashMessage }}
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    {% block content %}{% endblock %}
+
+                 </div>
+            </div>
+    </main>
+</body>
+
+</html>

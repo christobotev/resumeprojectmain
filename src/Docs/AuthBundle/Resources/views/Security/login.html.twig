@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <!-- Settings -->
+    <meta charset="utf-8">
+    <meta http-equiv="cleartype" content="on">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+
+    <!-- Title -->
+    <title>Docs.org</title>
+
+    <!-- Icons - http://realfavicongenerator.net -->
+    <link rel="icon" href="{{ asset('favicon.ico') }}">
+
+    <!-- JAVASCRIPT -->
+    {% block javascripts %}
+    <script src="{{ asset('/scripts/js/jquery.js') }}"> </script>
+    <script src="{{ asset('/scripts/js/jquery-ui.min.js') }}"> </script>
+    <script src="{{ asset('/scripts/js/main.js') }}"> </script>
+    <script src="{{ asset('/scripts/js/bootstrap.min.js') }}"> </script>
+    <script src="{{ asset('/scripts/js/jquery.backstretch.min.js') }}"></script>
+    {% endblock %}
+
+    <!-- Custom scripts -->
+    {% block customscripts %} {% endblock %}
+
+    {% block stylesheets %}
+    <link href="{{ asset('/scripts/css/styles.css') }}" rel="stylesheet">
+    <link href="{{ asset('/scripts/css/bootstrap.min.css') }}" rel="stylesheet">
+	<link href="{{ asset('/scripts/font-awesome-4.6.1/css/font-awesome.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
+    <link rel="stylesheet" href="{{ asset('scripts/font-awesome/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('scripts/css/form-elements.css') }}">
+    <link rel="stylesheet" href="{{ asset('scripts/css/style.css') }}">
+    {% endblock %}
+
+    {% block head %}{% endblock %}
+
+</head>
+
+{% if  app.request.attributes.get('_route') != '' %}
+{% set currentPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
+{% else %}
+{% set currentPath = "/" %}
+{% endif %}
+{% if error %}
+    <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+{% endif %}
+<!-- Top content -->
+<div class="top-content">
+
+    <div class="inner-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-8 col-sm-offset-2 text">
+                    <h1><strong>Docs</strong>.org</h1>
+                    <div class="description">
+                        <p>
+                            Docs dot org, using a free bootstrap theme
+                            and free images
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 col-sm-offset-3 form-box">
+                    <div class="form-top">
+                        <div class="form-top-left">
+                            <h3>Login to Docs.org</h3>
+                            <p>Enter your username and password to log in:</p>
+                        </div>
+                        <div class="form-top-right">
+                            <i class="fa fa-lock"></i>
+                        </div>
+                    </div>
+                    <div class="form-bottom">
+                        {{ form_start(form, {'attr': {'action': path('loginCheck'), 'class' : 'login-form'}}) }}
+                        	<div class="form-group">
+                                {{ form_row(form.username, {'attr': {'placeholder': 'Username...', 'class' : 'form-username form-control'}}) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_row(form.password, {'attr': {'placeholder': 'Password...', 'class' : 'form-username form-control'}}) }}
+                            </div>
+                            <button type="submit" class="btn">Sign in!</button>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 col-sm-offset-3 social-login">
+                    <h3>...or login with:</h3>
+                    <div class="social-login-buttons">
+                    {% for owner in hwi_oauth_resource_owners() %}
+                        <a href="{{ hwi_oauth_login_url(owner) }}" class="btn btn-link-2">
+                        	{% set socialVisual = (owner != 'google' ? owner : 'google-plus') %}
+                            <i class="fa fa-{{ socialVisual }}"></i> {{ owner | trans({}, 'HWIOAuthBundle') | capitalize }}
+                        </a>
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</html>

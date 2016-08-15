@@ -1,0 +1,37 @@
+{% extends 'MainBundle:Default:index.html.twig' %}
+
+{% block javascripts %}
+{{ parent() }}
+<script src="{{ asset('/scripts/js/contact-page.js') }}"></script>
+<script src="{{ asset('/scripts/js/jquery.bootpag.min.js') }}"></script>
+<script src="{{ asset('/scripts/js/jquery.waiting.min.js') }}"></script>
+<script src="{{ asset('/scripts/js/rating-pagination.js') }}"></script>
+<script src="{{ asset('/scripts/js/bootstrap-select/bootstrap-select.min.js') }}"> </script>
+{% endblock %}
+
+{% block customscripts %}
+<link rel="stylesheet" href="{{ asset('/scripts/css/spinner.css') }}" type="text/css">
+<link rel="stylesheet" href="{{ asset('/scripts/css/bootstrap-select.min.css') }}" type="text/css">
+{% endblock %}
+
+{% block content %}
+{% for flashMessage in app.session.flashbag.get('notice') %}
+<div class="alert alert-warning">
+    {{ flashMessage }}
+</div>
+{% endfor %}
+
+<div class="row">
+    <div class="col-lg-8">
+        {% include mdProfileSnippet.snippetTemplate %}
+
+        {% include mdRatingSnippet.snippetTemplate with {
+            'userID' : userID
+        } %}
+
+    </div>
+    <div class="col-lg-4">
+        {% include 'MainBundle::contactPageOptions.html.twig' %}
+    </div>
+</div>
+{% endblock %}

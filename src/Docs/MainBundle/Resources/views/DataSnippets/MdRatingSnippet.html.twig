@@ -1,0 +1,62 @@
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        initRatingPaging({
+            pages : {{ (mdRatingSnippet.ratingsCount/ 10) | round(0, "ceil") }},
+            currentPage : 1,
+            next : "{{ 'Next' | trans }} &raquo;",
+            prev : "&laquo; {{ 'Previous' | trans }}",
+            url : "{{ path("listRating", { 'userID' : userID })}}",
+            error: "{{ "Couldn't get account information" | trans }}"
+        });
+    });
+</script>
+<div id="ratingsSnippet">
+    <div class="panel panel-default">
+
+        <div class="panel-heading">
+            <h2 class="panel-title">
+                <a data-toggle="collapse" href="#collapse-ratings" aria-expanded="false">
+                    {{ title | default("Ratings Info") | trans}} <span class="toggle"></span>
+                </a>
+            </h2>
+        </div>
+
+        <div class="panel-body table-container" id="listRatings">
+            <div class="row">
+                <table class="table table-striped table-hover sortable">
+
+                    <!-- Table Head -->
+                    <thead>
+                        <tr>
+                            <th class="sorttable_nosort">{{ 'Created by' }}</th>
+                            <th class="sorttable_nosort">{{ 'Rating' }}</th>
+                            <th class="sorttable_nosort">{{ 'Note' }}</th>
+                            <th class="sorttable_nosort">{{ 'Created' }}</th>
+                        </tr>
+                    </thead>
+
+                    <!-- Table Body -->
+                    <tbody>
+                        {% for rating in mdRatingSnippet.data %}
+                        <tr>
+                            {% autoescape 'html' %}
+                            <td>{{ rating.createdBy }}</td>
+                            <td>{{ rating.rating }}</td>
+                            <td>{{ rating.note }}</td>
+                            <td>{{ rating.created | localizeddate('medium', 'short') }}</td>
+                            {% endautoescape %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pages row">
+                <div class="pull-left">
+                    <!-- Pagination -->
+                    <div id="ratingPagination"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

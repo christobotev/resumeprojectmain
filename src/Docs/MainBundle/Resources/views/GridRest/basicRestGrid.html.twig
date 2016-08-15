@@ -1,0 +1,54 @@
+<div role="tabpanel" class="tab-pane active">
+
+    {% if not hideFilter is defined %}
+    <div class="panel panel-default">
+
+        <div class="panel-heading">
+            <h2 class="panel-title">{{ "Filter" | trans }}</h2>
+        </div>
+
+        <div class="panel-body">
+            <!-- Filters -->
+            <div class="filters">
+                {% block filters %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+
+        <div class="panel-heading">
+            <h2 class="panel-title">{{ "Results" | trans }}</h2>
+        </div>
+
+        <div class="panel-body table-container">
+
+            <!-- Table -->
+            <div class="results row">
+                {% block tableData %}{% endblock %}
+            </div>
+
+            <!-- Pagination -->
+            <div class="pages row">
+                <div class="pull-left">
+                    {% block pagination %}{% endblock %}
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="actions">
+                {% block tableActions %} {% endblock %}
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% block customscripts %}
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        window.prepareGridFilter();
+    });
+</script>
+{% endblock %}

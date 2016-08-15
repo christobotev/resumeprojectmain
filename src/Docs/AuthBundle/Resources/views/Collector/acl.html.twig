@@ -1,0 +1,28 @@
+{% extends 'WebProfilerBundle:Profiler:layout.html.twig' %}
+
+{% block menu %}
+    <span class="label">
+        <span class="icon">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABHklEQVRYhe2UsWoCQRRFDzEQLFIkraBf4DeYMnUsAgGttTWFxX6AnYopki8wkD8JpE0KBcEipBGr1KuFT4vZt+7Mrrs2c+E2w9x3D8PMgJvKQBv4AObAv3gmay3Zk4uegCWwSfASeDxlcQmYWBSbHks2s95SlO/9mrW8GzP4l92pdMUvwF/M3k7a8ltgrQwcol+0MjBS9q+BmzQAgTJsYJEbKLkgDcCXMeQbu0t1CfwY2U/X8isgNIb0HPLPRjaUmdaqET3GhkP+TslXXQDqyoB6gXkPcD6AEtBE/1BGQN/ScfkHEp7yuxI8tadx5ddE334eDqUromoB5Uf/BA/gATyAB/AAZweoFAhQ0QAugFUB5SvpUnUPLHIsX0jHQVufrVYl2Oh48wAAAABJRU5ErkJggg=="/>
+        </span>
+        <strong>Permissions</strong>
+    </span>
+{% endblock %}
+
+{% block panel %}
+    <h2>List of pemissions</h2>
+
+    <table>
+        <tr>
+            <th>Resource name</th>
+            <th>Rights</th>
+        </tr>
+        {% for perm in collector.data.acl_permissions %}
+            <tr>
+                <td>{{ perm.ID }}</td>
+                <td>{{ perm.Access }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}

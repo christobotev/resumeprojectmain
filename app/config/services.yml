@@ -1,0 +1,329 @@
+services:
+#   AUTHENTICATE
+    auth.security.authentication.listener:
+        class: Docs\AuthBundle\Security\Firewall\AuthListener
+        arguments: ["@security.token_storage", "@security.authentication.manager", "@logger", "@security.http_utils"]
+        public: false
+
+    auth.security.authentication.provider:
+        class: Docs\AuthBundle\Security\Authentication\Provider\DocsAuthProvider
+        arguments: ["@docs_user_provider", "%kernel.cache_dir%/security/auth", "@security.password_encoder"]
+
+    # user provider for all auth types
+    docs_user_provider:
+        class: Docs\AuthBundle\Security\Authentication\Provider\DocsUserProvider
+        arguments: ["@doctrine.orm.entity_manager"]
+        public: false
+
+#   AUTHORIZE
+    security.permission_manager:
+      class: Docs\AuthBundle\Security\Authorization\Permission\PermissionManager
+      arguments: ["@doctrine.orm.entity_manager", "%kernel.cache_dir%", "%enable_cache_permissions%"]
+      public: false
+
+    scurity.acl_data_collector:
+      class:  Docs\AuthBundle\DataCollector\AclDataCollector
+      tags:
+          - { name: data_collector, template: "AuthBundle:Collector:acl", id: acl_permissions }
+      arguments: ["@security.permission_manager"]
+
+#  SECURITY VOTERS
+    security.controller_voter:
+        class: Docs\MainBundle\Security\Voter\ControllerActionVoter
+        arguments: ["@security.permission_manager"]
+        tags:
+          - { name: security.voter }
+
+    security.system_permissions_voter:
+        class: Docs\MainBundle\Security\Voter\SystemPermissionsVoter
+        arguments: ["@security.permission_manager"]
+        tags:
+           - { name: security.voter }
+
+#   Repositories as services
+#   This way we dont have to inject the whole EM in each service we need one/few repositories
+    repository.user:
+        class: Doctrine\ORM\EntityRepository
+        factory: ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments:
+            - Docs\CommonBundle\Entity\User
+
+    repository.appointment:
+        class: Doctrine\ORM\EntityRepository
+        factory: ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments:
+            - Docs\CommonBundle\Entity\Appointment
+
+    repository.appointment_symptoms:
+        class: Doctrine\ORM\EntityRepository
+        factory: ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments:
+            - Docs\CommonBundle\Entity\AppointmentSymptoms
+
+    repository.user_ratings:
+        class: Doctrine\ORM\EntityRepository
+        factory: ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments:
+            - Docs\CommonBundle\Entity\UserRatings
+
+    repository.user_roles:
+        class: Doctrine\ORM\EntityRepository
+        factory: ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments:
+            - Docs\CommonBundle\Entity\UserRoles
+
+    repository.reminder:
+        class: Doctrine\ORM\EntityRepository
+        factory: ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments:
+            - Docs\CommonBundle\Entity\Reminder
+
+    repository.appointmentStatuses:
+        class: Doctrine\ORM\EntityRepository
+        factory: ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments:
+            - Docs\CommonBundle\Entity\AppointmentStatus
+
+    repository.rating:
+        class: Doctrine\ORM\EntityRepository
+        factory: ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments:
+            - Docs\CommonBundle\Entity\Rating
+
+#   Twig extensions
+    twig.extension.intl:
+        class: Twig_Extensions_Extension_Intl
+        tags:
+            - { name: twig.extension }
+
+    twig.extension.route_check:
+        class: Docs\MainBundle\Twig\Extension\RouteCheck
+        arguments: ["@security.permission_manager", "@router"]
+        tags:
+            - { name: twig.extension }
+
+    twig.extension.reminders_count:
+        class: Docs\MainBundle\Twig\Extension\RemindersExtension
+        calls:
+            - [setEntityManager, ["@doctrine.orm.entity_manager"]]
+            - [setTokenStorage, ["@security.token_storage"]]
+        tags:
+            - { name: twig.extension }
+
+    twig.extension.pagination_extra:
+        class: Docs\MainBundle\Twig\Extension\PaginationExtraExtension
+        calls:
+          - [initEnv, ["@twig"]]
+        tags:
+            - { name: twig.extension }
+
+    twig.extension.localize_date:
+        class: Docs\MainBundle\Twig\Extension\LocalizeDateExtension
+        public: false
+        tags:
+            - { name: twig.extension }
+
+    twig.extension.ratingAssessment:
+        class: Docs\MainBundle\Twig\Extension\AssignRating
+        tags:
+            - { name: twig.extension }
+
+    twig.extension.is_doctor:
+        class: Docs\MainBundle\Twig\Extension\IsDoctorExtension
+        tags:
+            - { name: twig.extension }
+
+    twig.extension.appointmentStatus:
+        class: Docs\MainBundle\Twig\Extension\AppointmentStatusExtension
+        tags:
+            - { name: twig.extension }
+
+#   Data Providers
+    data_provider.rest.doctors:
+        class: Docs\MainBundle\DataProvider\DocsRestProvider
+        arguments: ["@rest_client.docs.user_role", "@docs.rest.filter_manager"]
+
+    data_provider.doctors:
+        class: Docs\MainBundle\DataProvider\DocsProvider
+        arguments: ["@doctrine.orm.entity_manager", "@knp_paginator", "@repository.appointment", "@repository.user"]
+
+    data_provider.reminders:
+        class: Docs\MainBundle\DataProvider\RemindersProvider
+        arguments: ["@repository.reminder", "@knp_paginator", "@docs.filter_manager"]
+
+    data_provider.appointments:
+        class: Docs\MainBundle\DataProvider\AppointmentsProvider
+        arguments: ["@repository.appointment", "@knp_paginator", "@docs.filter_manager"]
+
+#   DB services
+    docs.persister:
+        class: Docs\MainBundle\Persistence\Persister
+        arguments: ["@doctrine.orm.entity_manager"]
+
+    docs.reference_factory:
+       class: Docs\MainBundle\Reference\ReferenceFactory
+       arguments: ["@doctrine.orm.entity_manager"]
+
+#   Data Filters
+    docs.filter_manager:
+        class: Docs\MainBundle\DataProvider\Filter\FilterManager
+
+    docs.rest.filter_manager:
+        class: Docs\MainBundle\DataProvider\RestFilter\RestFilterManager
+
+    data_filter.userName:
+        class: Docs\MainBundle\DataProvider\RestFilter\UserNameFilter
+        arguments: ["@doctrine.orm.entity_manager"]
+        lazy: true
+        tags:
+            - {name: data_filter, filterName: userName, type: rest}
+
+    data_filter.userRole:
+        class: Docs\MainBundle\DataProvider\RestFilter\UserRoleFilter
+        arguments: ["@doctrine.orm.entity_manager"]
+        lazy: true
+        tags:
+            - {name: data_filter, filterName: userRole, type: rest}
+
+    data_filter.appointmentStatus:
+        class: Docs\MainBundle\DataProvider\Filter\AppointmentStatusFilter
+        lazy: true
+        tags:
+            - {name: data_filter, filterName: appointmentStatus}
+
+    data_filter.reminderDate:
+        class: Docs\MainBundle\DataProvider\Filter\ReminderDateFilter
+        lazy: true
+        tags:
+            - {name: data_filter, filterName: reminderDate}
+
+    data_filter.appointmentDate:
+        class: Docs\MainBundle\DataProvider\Filter\AppointmentDateFilter
+        lazy: true
+        tags:
+            - {name: data_filter, filterName: appointmentDate}
+
+#   form helpers/processors
+    form.appointment_form_helper:
+        class: Docs\MainBundle\Appointment\AppointmentFormHelper
+        arguments: ["@service_container"]
+        calls:
+          - [ setContainer, [ '@service_container' ] ]
+
+    form.appointment_processor:
+        class: Docs\MainBundle\Appointment\AppointmentProcessor
+        arguments: ["@docs.persister", "@docs.reference_factory", "@note.processor.local", "@symptoms.processor", "@repository.appointment"]
+
+    appointment.toApprove:
+        class: Docs\MainBundle\Appointment\UpdateStatus\ToApprove
+        arguments: ["@google.calendar_service", "@google.client", "@repository.appointment", "@docs.reference_factory", "@event_dispatcher", "@calendar.writer"]
+
+    form.reminder_form_helper:
+      class: Docs\MainBundle\Reminder\ReminderFormHelper
+      arguments: ["@service_container"]
+      calls:
+        - [ setContainer, [ '@service_container' ] ]
+
+    reminder.processor:
+        class: Docs\MainBundle\Reminder\ReminderProcessor
+        arguments: ["@rest_client.docs.reminder"]
+
+    form.rating_processor:
+        class: Docs\MainBundle\Rating\RatingProcessor
+        arguments: ["@docs.persister", "@docs.reference_factory", "@note.processor.local", "@repository.rating"]
+
+    note.processor:
+        class: Docs\MainBundle\Note\NoteProcessor
+        arguments: ['@rest_client.docs.note']
+
+    note.processor.local:
+        class: Docs\MainBundle\Note\NoteProcessorLocal
+        arguments: ['@docs.persister']
+
+    symptoms.processor:
+        class: Docs\MainBundle\Appointment\AppointmentSymptomsProcessor
+        arguments: ["@docs.persister", "@docs.reference_factory", "@repository.appointment_symptoms"]
+
+#   Data snippets / reusable snippets
+    docs_snippet.md_profile:
+      class: Docs\MainBundle\DataSnippets\MdProfileSnippet
+      arguments: ["@repository.user"]
+
+    docs_snippet.md_ratings:
+      class: Docs\MainBundle\DataSnippets\MdRatingSnippet
+      arguments: ["@repository.rating"]
+
+#   specific event listeners
+    doctrine.validator.listener:
+       class: Docs\MainBundle\EventListener\Entity\Validation
+       arguments: ["@validator"]
+       tags:
+           - { name: doctrine.event_subscriber, connection: default }
+
+    kernel.listener.calendar.write:
+        class: Docs\MainBundle\EventListener\CalendarListener
+        arguments: ["@calendar.writer", "@event_dispatcher"]
+        tags:
+            - { name: kernel.event_listener, event: calendar.write, method: onCalendarWriteRequest }
+
+#   rest clients
+    rest_client.docs.reminder:
+      class: Docs\MainBundle\RestClient\DocsReminder
+      tags:
+        - { name: rest_client }
+      arguments:
+        - base_url: "%docs.api%"
+          resource: "reminders"
+          authenticationParams:
+            - apiKey: '%docs.apiKey%'
+
+    rest_client.docs.note:
+      class: Docs\MainBundle\RestClient\DocsNote
+      tags:
+        - { name: rest_client }
+      arguments:
+        - base_url: "%docs.api%"
+          resource: "notes"
+          authenticationParams:
+            - apiKey: '%docs.apiKey%'
+
+    rest_client.docs.user:
+      class: Docs\MainBundle\RestClient\DocsUser
+      tags:
+        - { name: rest_client }
+      arguments:
+        - base_url: "%docs.api%"
+          resource: "users"
+          authenticationParams:
+            - apiKey: '%docs.apiKey%'
+
+    rest_client.docs.user_role:
+      class: Docs\MainBundle\RestClient\DocsUserRoles
+      tags:
+        - { name: rest_client }
+      arguments:
+        - base_url: "%docs.api%"
+          resource: "user-roles"
+          authenticationParams:
+            - apiKey: '%docs.apiKey%'
+
+    # exports
+    export.appointments:
+        class: Docs\MainBundle\Export\AppointmentsExport
+        arguments: ["%export_files_dir%", "@data_provider.appointments", "@doctrine.orm.entity_manager"]
+
+    # google services
+    google.config:
+        class: Docs\MainBundle\Google\GoogleClientConfig
+        arguments: ["%google_api_key_server%", "%google_client_id%", "%google_client_secret%"]
+
+    google.client:
+        class: Docs\MainBundle\Google\GoogleClient
+        arguments: ["@google.config"]
+
+    google.calendar_service:
+        class: Docs\MainBundle\Google\Service\CalendarService
+
+    # local calendar manager
+    calendar.writer:
+        class: Docs\MainBundle\Calendar\CalendarWriter

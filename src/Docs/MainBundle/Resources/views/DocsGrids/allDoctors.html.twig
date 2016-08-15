@@ -1,0 +1,12 @@
+{% extends 'MainBundle:Default:index.html.twig' %}
+
+{% block javascripts %}
+{{ parent() }}
+<script src="{{ asset('/scripts/js/all-docs-pagination.js') }}"> </script>
+<script src="{{ asset('/scripts/js/jquery.bootpag.min.js') }}"></script>
+<script src="{{ asset('/scripts/js/jquery.waiting.min.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+	{% include 'MainBundle:DocsGrids:allDoctorsPaging.html.twig' %}
+{% endblock %}

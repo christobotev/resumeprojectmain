@@ -1,0 +1,50 @@
+{% set data = mdProfileSnippet.data %}
+<div class="panel panel-default">
+
+    <div class="panel-heading">
+         <div class="row">
+            <div class="col-xs-8">
+                <h2 class="panel-title">
+                    {{ "M.D. " | trans }} {{ data.firstName ~ ' ' ~ data.lastName }}
+                </h2>
+                <span class="small" style="color:grey">
+                  {{ 'specialist'}}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel-body">
+
+        <h3>{{ data.firstName ~ ' ' ~ data.lastName }}</h3>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <p>
+                    <b>{{ 'Address:' | trans }} </b>
+                    {{ 'N/A' }}
+                    <br>
+
+                    <b>{{ 'Phone:' | trans }}</b>
+                    {{ 'N/A' }}
+                    <br>
+
+                    <b>{{ 'Current date:' }}</b>
+                    {{ currentDate }}
+                    <br>
+                </p>
+            </div>
+            <div class="col-sm-6">
+                <p>
+                    <b>{{ 'Email:' }}</b>
+                    {{ data.email }}
+                    <br>
+
+                    <b>{{ 'Member since:' }}</b>
+                    {{ data.created | localizedate('medium')}}
+                    <br>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

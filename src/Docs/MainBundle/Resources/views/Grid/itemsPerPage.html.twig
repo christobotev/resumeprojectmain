@@ -1,0 +1,18 @@
+{% set defaultPerPage = app.request.get("perPage", 0) %}
+
+<form class="form-inline" action="">
+    <div class="form-group">
+        <label for="items-per-page">{{ 'Items per page' | trans }}</label>
+        <select class="form-control items-count-per-page">
+            {% for item in items %}
+            <option
+                value="{{ item }}"
+                data-url="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'perPage': item})) }}"
+                {%  if defaultPerPage == item %} selected = "selected" {% endif %}
+            >
+                {{ item }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+</form>
