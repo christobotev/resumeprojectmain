@@ -47,7 +47,7 @@ class AppointmentFormHelper
     /**
      * @param Request $request
      * @param Form $form
-     * @param int $inkassoID
+     * @param AppointmentProcessor $processor
      */
     protected function executeProcessor(
         Request $request,

@@ -7214,9 +7214,6 @@ span[data-target="#chooseEmployee"] {
 .tooltip {
   font-size: 14px !important; }
 
-.glyphicon[data-target='#blockedInkasso'] {
-  color: red; }
-
 /* Report tables */
 .report-tables table {
   table-layout: fixed; }

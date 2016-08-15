@@ -32,7 +32,7 @@ class UserNameFilter implements RestFilterInterface
     {
         if ($request->query->has('name')) {
             $username = $request->get('name');
-            /* @var $restClient \Inkasso\MainBundle\RestClient\CwcCommunications */
+
             $restClient->getQueryBuilder()
                             ->addCondition(
                                 ["field" => "username",

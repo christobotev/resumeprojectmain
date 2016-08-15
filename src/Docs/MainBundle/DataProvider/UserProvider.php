@@ -25,8 +25,8 @@ class UsersProvider implements DataProviderInterface
 
     public function getUsers(Request $request)
     {
-        $usersRepo = $this->entityManager->getRepository("Inkasso\CommonBundle\Entity\User");
-        /* @var $usersRepo \Inkasso\CommonBundle\Repository\UserRepository */
+        $usersRepo = $this->entityManager->getRepository("Docs\CommonBundle\Entity\User");
+        /* @var $usersRepo \Docs\CommonBundle\Repository\UserRepository */
 
         $queryBuilder = clone $usersRepo->getQueryBuilder();
 

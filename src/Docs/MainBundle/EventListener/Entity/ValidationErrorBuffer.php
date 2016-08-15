@@ -86,7 +86,7 @@ class ValidationErrorBuffer
 
     /**
      * @param string $msg
-     * @return \Inkasso\MainBundle\EventListener\Entity\ValidationErrorBuffer
+     * @return \Docs\MainBundle\EventListener\Entity\ValidationErrorBuffer
      */
     public function setErrorWithoutField($msg)
     {
