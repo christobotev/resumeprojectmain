@@ -29,7 +29,7 @@ class ReminderFormHelper
             ['md' => $md]
         );
 
-        if ($request->request->has('reminder')) {
+        if ($request->request->has('reminder_form')) {
             return $this->executeProcessor(
                 $request,
                 $reminderForm,
