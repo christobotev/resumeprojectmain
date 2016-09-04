@@ -50,6 +50,16 @@ doctrine:
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
 
+doctrine_cache:
+    providers:
+      restMemcached:
+        namespace: %kernel.environment%_
+        memcached:
+          servers:
+            server1:
+              host: %app_memcache_host%
+              port: %app_memcache_port%
+
 # Assetic Configuration
 assetic:
     debug:          "%kernel.debug%"
@@ -93,6 +103,10 @@ parameters:
     google_api_key_server: AIzaSyCoCt9Z-XwUDAik1gsyKOuMvAQoUomNleI
     docs.api: http://api-docs.org
     docs.apiKey: 098f6bcd4621d373cade4e832627b4f6
+
+    app_memcache_host: 127.0.0.1
+    app_memcache_port: 11213
+    one_hour_cache: 3600
 
 #   exports file directory
     export_files_dir: %kernel.root_dir%/Resources/exports

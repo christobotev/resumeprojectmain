@@ -2,12 +2,12 @@
 namespace Docs\MainBundle\DataSnippets;
 
 use Docs\MainBundle\DataSnippets\SnippetsInterface;
-use Docs\CommonBundle\Repository\UserRepository;
+use Docs\MainBundle\RestClient\DocsUser;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * Snippet for md basic profile
  * @author h.botev
- *
  */
 class MdProfileSnippet implements SnippetsInterface
 {
@@ -17,13 +17,13 @@ class MdProfileSnippet implements SnippetsInterface
     protected $data = [];
 
     /**
-     * @var UserRepository
+     * @var DocsUser
      */
-    protected $userRepository;
+    protected $docsRestClient;
 
-    public function __construct(UserRepository $userRepo)
+    public function __construct(DocsUser $docsRC)
     {
-        $this->userRepository = $userRepo;
+        $this->docsRestClient = $docsRC;
     }
 
     /**
@@ -41,14 +41,14 @@ class MdProfileSnippet implements SnippetsInterface
      */
     public function buildSnippetData($userID)
     {
-        $userInfo = $this->userRepository->findOneBy(['userID' => $userID]);
+        $userInfo = $this->docsRestClient->getItemFromCache($userID);
 
         $mdData = [
-            "userID" => $userInfo->getUserID(),
-            "firstName" => $userInfo->getFirstName(),
-            "lastName" => $userInfo->getLastName(),
-            "email" => $userInfo->getEmail(),
-            "created" => $userInfo->getCreated(),
+            "userID" => $userInfo['userID'],
+            "firstName" => $userInfo['firstName'],
+            "lastName" => $userInfo['lastName'],
+            "email" => $userInfo['email'],
+            "created" => new \DateTime($userInfo['created']),
         ];
 
         $this->data = $mdData;

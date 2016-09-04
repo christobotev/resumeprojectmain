@@ -150,6 +150,9 @@ services:
     data_provider.reminders:
         class: Docs\MainBundle\DataProvider\RemindersProvider
         arguments: ["@repository.reminder", "@knp_paginator", "@docs.filter_manager"]
+#        calls:
+#        - [setCache, ["@doctrine_cache.providers.restMemcached"]]
+#        - [setExpireTime, ["%one_hour_cache%"]]
 
     data_provider.appointments:
         class: Docs\MainBundle\DataProvider\AppointmentsProvider
@@ -247,7 +250,7 @@ services:
 #   Data snippets / reusable snippets
     docs_snippet.md_profile:
       class: Docs\MainBundle\DataSnippets\MdProfileSnippet
-      arguments: ["@repository.user"]
+      arguments: ["@rest_client.docs.user"]
 
     docs_snippet.md_ratings:
       class: Docs\MainBundle\DataSnippets\MdRatingSnippet
@@ -291,6 +294,9 @@ services:
       class: Docs\MainBundle\RestClient\DocsUser
       tags:
         - { name: rest_client }
+      calls:
+        - [setCache, ["@doctrine_cache.providers.restMemcached"]]
+        - [setExpireTime, ["%one_hour_cache%"]]
       arguments:
         - base_url: "%docs.api%"
           resource: "users"

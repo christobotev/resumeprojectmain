@@ -13,7 +13,6 @@ use Psr\Log\LoggerInterface;
 
 abstract class AbstractClient extends Client
 {
-
     /**
      * Condition builder instance for the current object
      *

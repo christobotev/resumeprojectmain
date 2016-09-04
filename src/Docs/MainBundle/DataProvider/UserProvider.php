@@ -47,8 +47,6 @@ class UsersProvider implements DataProviderInterface
             ];
         }
 
-        $usersData = $this->decoratorManager->decorate("employeesCasData", $usersData);
-
         return [
             "users" => $usersData,
             "pagination" => $pagination

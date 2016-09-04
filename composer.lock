@@ -4,19 +4,19 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4bc5192ce3fbf9f17b106ddc0d6a438c",
-    "content-hash": "14f8ece01ac4929b32dfe0a0fc226c40",
+    "hash": "a7e354f4f9c60c2bc6da0e2e6a8668d1",
+    "content-hash": "2ef12c9b2cc84cc1d4ea7b64e80b1d57",
     "packages": [
         {
             "name": "docs/common-bundle",
-            "version": "1.0.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "git@bitbucket.org:h_botev/resumeprojectcommonbundle.git",
-                "reference": "c8ed590ffe7a540f5e3f8784b825dc1c3388a942"
+                "reference": "a3bda5a7cee35bb35f699630b9bdd69e8fa113e7"
             },
             "require": {
-                "php": ">=5.4"
+                "php": ">=5.5"
             },
             "type": "library",
             "autoload": {
@@ -27,11 +27,11 @@
             "authors": [
                 {
                     "name": "H.Botev",
-                    "email": "h.botev@viscomp.bg"
+                    "email": "strike@abv.bg"
                 }
             ],
             "description": "common functionality between docs-app and docs-api",
-            "time": "2016-07-20 18:13:11"
+            "time": "2016-09-03 23:35:31"
         },
         {
             "name": "doctrine/annotations",
@@ -4029,7 +4029,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "google/apiclient": 5
+        "google/apiclient": 5,
+        "docs/common-bundle": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
