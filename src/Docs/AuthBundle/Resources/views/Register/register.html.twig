@@ -1,9 +1,102 @@
-{{ form_start(form) }}
-    {{ form_row(form.username) }}
-    {{ form_row(form.email) }}
-    {{ form_row(form.password.first) }}
-    {{ form_row(form.password.second) }}
-    {{ form_row(form.firstName) }}
-    {{ form_row(form.lastName) }}
-    <button type="submit">Register!</button>
-{{ form_end(form) }}
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <!-- Settings -->
+    <meta charset="utf-8">
+    <meta http-equiv="cleartype" content="on">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+
+    <!-- Title -->
+    <title>Docs.org</title>
+
+    <!-- Icons - http://realfavicongenerator.net -->
+    <link rel="icon" href="{{ asset('favicon.ico') }}">
+
+    <!-- JAVASCRIPT -->
+    {% block javascripts %}
+    <script src="{{ asset('/scripts/js/jquery.js') }}"> </script>
+    <script src="{{ asset('/scripts/js/jquery-ui.min.js') }}"> </script>
+    <script src="{{ asset('/scripts/js/main.js') }}"> </script>
+    <script src="{{ asset('/scripts/js/bootstrap.min.js') }}"> </script>
+    <script src="{{ asset('/scripts/js/jquery.backstretch.min.js') }}"></script>
+    {% endblock %}
+
+    <!-- Custom scripts -->
+    {% block customscripts %} {% endblock %}
+
+    {% block stylesheets %}
+    <link href="{{ asset('/scripts/css/styles.css') }}" rel="stylesheet">
+    <link href="{{ asset('/scripts/css/bootstrap.min.css') }}" rel="stylesheet">
+	<link href="{{ asset('/scripts/font-awesome-4.6.1/css/font-awesome.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
+    <link rel="stylesheet" href="{{ asset('scripts/font-awesome/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('scripts/css/form-elements.css') }}">
+    <link rel="stylesheet" href="{{ asset('scripts/css/style.css') }}">
+    {% endblock %}
+
+    {% block head %}{% endblock %}
+
+</head>
+
+{% if error is defined %}
+    <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+{% endif %}
+<!-- Top content -->
+<div class="top-content">
+
+    <div class="inner-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-8 col-sm-offset-2 text">
+                    <h1><strong>Docs</strong>.org</h1>
+                    <div class="description">
+                        <p>
+                            Docs dot org, using a free bootstrap theme
+                            and free images
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 col-sm-offset-3 form-box">
+                    <div class="form-top">
+                        <div class="form-top-left">
+                            <h3>{{ 'Register' }}</h3>
+                            <p>{{ 'We suggest you login with your google account.' }}</p>
+                        </div>
+                        <div class="form-top-right">
+                            <i class="glyphicon glyphicon-edit"></i>
+                        </div>
+                    </div>
+                    <div class="form-bottom">
+                        {{ form_start(form) }}
+                            {{ form_row(form.username, {'attr': {'placeholder': 'Username...'}}) }}
+                            {{ form_row(form.email, {'attr': {'placeholder': 'Example@gmail.com'}}) }}
+                            {{ form_row(form.password.first) }}
+                            {{ form_row(form.password.second) }}
+                            {{ form_row(form.firstName) }}
+                            {{ form_row(form.lastName) }}
+                            <button type="submit" class="btn-primary">{{ 'Register!' }}</button>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 col-sm-offset-3 social-login">
+                    <h3>...or go back to login page</h3>
+                    <div>
+                        <a href="{{ path("login") }}" class="btn btn-link-2">
+                            {{ 'Back' }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</html>

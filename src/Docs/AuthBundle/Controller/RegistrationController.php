@@ -1,33 +1,55 @@
 <?php
 namespace Docs\AuthBundle\Controller;
 
-use Docs\AuthBundle\Form\RegisterType as UserForm;
-use Docs\CommonBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Docs\AuthBundle\Security\Authentication\SecurityUser;
+use Docs\CommonBundle\Entity\User;
+use Docs\AuthBundle\Form\RegisterType as UserForm;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 
+/**
+ * Registration controller
+ * @author h.botev
+ *
+ */
 class RegistrationController extends Controller
 {
+    /**
+     * @param Request $request
+     */
     public function registerAction(Request $request)
     {
-        $user = new User();
-        $form = $this->createForm(UserForm::class, $user);
+        $registerService = $this->get('register_helper');
+        /* @var $registerService \Docs\AuthBundle\Register\RegisterHelper */
 
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $securityData = new SecurityUser($user);
-            $password = $this->get('security.password_encoder')
-                                    ->encodePassword($securityData, $user->getPassword());
-            $user->setPassword($password);
-            $user->setSalt($securityData->generateSalt());
-            $user->setGoogleID(0);
+        $registered = '';
+        $flashBag = $this->get("session")->getFlashBag();
+        /* @var $flashBag \Symfony\Component\HttpFoundation\Session\Flash\FlashBag */
+        $flashBag->clear();
 
-            $em = $this->get("doctrine.orm.entity_manager");
-            $em->persist($user);
-            $em->flush();
+        try {
+            $user = new User();
+            $form = $this->createForm(UserForm::class, $user);
+            $form->handleRequest($request);
 
-            return $this->redirectToRoute('/');
+            if ($form->isSubmitted() && $form->isValid()) {
+                $registered = $registerService->submitForm($user);
+            }
+        } catch (\Exception $e) {
+            $flashBag->add(
+                'error',
+                'Could not register user successfully'
+            );
+            return $this->redirectToRoute('main');
+        }
+
+        $flashBag->add(
+            'success',
+            'Please use your new credentials to log in.'
+        );
+
+        if ($registered) {
+            return $this->redirectToRoute('main');
         }
 
         return $this->render(

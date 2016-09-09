@@ -1,32 +1,4 @@
 services:
-#   AUTHENTICATE
-    auth.security.authentication.listener:
-        class: Docs\AuthBundle\Security\Firewall\AuthListener
-        arguments: ["@security.token_storage", "@security.authentication.manager", "@logger", "@security.http_utils"]
-        public: false
-
-    auth.security.authentication.provider:
-        class: Docs\AuthBundle\Security\Authentication\Provider\DocsAuthProvider
-        arguments: ["@docs_user_provider", "%kernel.cache_dir%/security/auth", "@security.password_encoder"]
-
-    # user provider for all auth types
-    docs_user_provider:
-        class: Docs\AuthBundle\Security\Authentication\Provider\DocsUserProvider
-        arguments: ["@doctrine.orm.entity_manager"]
-        public: false
-
-#   AUTHORIZE
-    security.permission_manager:
-      class: Docs\AuthBundle\Security\Authorization\Permission\PermissionManager
-      arguments: ["@doctrine.orm.entity_manager", "%kernel.cache_dir%", "%enable_cache_permissions%"]
-      public: false
-
-    scurity.acl_data_collector:
-      class:  Docs\AuthBundle\DataCollector\AclDataCollector
-      tags:
-          - { name: data_collector, template: "AuthBundle:Collector:acl", id: acl_permissions }
-      arguments: ["@security.permission_manager"]
-
 #  SECURITY VOTERS
     security.controller_voter:
         class: Docs\MainBundle\Security\Voter\ControllerActionVoter
@@ -47,6 +19,12 @@ services:
         factory: ["@doctrine.orm.default_entity_manager", getRepository]
         arguments:
             - Docs\CommonBundle\Entity\User
+
+    repository.role:
+        class: Doctrine\ORM\EntityRepository
+        factory: ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments:
+            - Docs\CommonBundle\Entity\Role
 
     repository.appointment:
         class: Doctrine\ORM\EntityRepository
