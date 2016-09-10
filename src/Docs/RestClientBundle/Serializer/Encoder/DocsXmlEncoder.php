@@ -139,7 +139,7 @@ class DocsXmlEncoder extends XmlEncoder
                 $node->firstChild->nodeType,
                 [XML_TEXT_NODE,
                 XML_CDATA_SECTION_NODE]
-        )) {
+            )) {
             return $node->firstChild->nodeValue;
         }
 

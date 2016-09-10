@@ -154,13 +154,6 @@ class SecurityUser implements UserInterface
     }
 
     /**
-     * @param $serialized
-     */
-    public function unserialize ($serialized)
-    {
-    }
-
-    /**
      * Check wether the user
      * is a doctor or not
      * @return boolean

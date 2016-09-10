@@ -92,6 +92,10 @@ class DocsUserProvider extends OAuthUserProvider implements UserProviderInterfac
         return new SecurityUser($result[0]);
     }
 
+    /**
+     * {@inheritDoc}
+     * @see \HWI\Bundle\OAuthBundle\Security\Core\User\OAuthUserProvider::loadUserByUsername()
+     */
     public function loadUserByUsername($username)
     {
     }

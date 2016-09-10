@@ -36,7 +36,7 @@ class PermissionFileWriter
             }
         }
 
-        $file = $cacheDir . "/primissions_" . $roleName . "_cache.php";
+        $file = $cacheDir . "/perimissions_" . $roleName . "_cache.php";
 
         if (!is_file($file)) {
             if (!@touch($file)) {

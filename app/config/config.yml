@@ -95,7 +95,7 @@ knp_paginator:
 parameters:
     locale: en
     mainURL: http://docs.org
-    enable_cache_permissions: false
+    enable_cache_permissions: true
     google_client_id: 453435184655-vrs29j06pqnen74osshu6vnun59ickkt.apps.googleusercontent.com
     google_client_secret: ChL7MU_TULDgOgauEjaMM8CF
 

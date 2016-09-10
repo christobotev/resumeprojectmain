@@ -3,15 +3,17 @@ namespace Docs\AuthBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Docs\AuthBundle\Form\LoginType as LoginForm;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Login controller
- * @author hbotev
+ * @author h.botev
  */
 class LoginController extends Controller
 {
-    public function loginAction(Request $request)
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function loginAction()
     {
         $form = $this->createForm(
             LoginForm::class,
@@ -28,7 +30,10 @@ class LoginController extends Controller
         );
     }
 
-    public function loginCheckAction(Request $request)
+    /**
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function loginCheckAction()
     {
         return $this->redirect($this->container->getParameter('mainURL'));
     }

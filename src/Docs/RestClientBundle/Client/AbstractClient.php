@@ -209,7 +209,7 @@ abstract class AbstractClient extends Client
 
         $request = $this->createRequest(
             "DELETE",
-            $this->resource,
+            rtrim($this->resource, "/") . "/" . $id,
             ["query" => $query]
         );
 

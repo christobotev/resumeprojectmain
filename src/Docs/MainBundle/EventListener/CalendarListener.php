@@ -6,6 +6,11 @@ use Docs\MainBundle\Event\CalendarWriteEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Docs\MainBundle\Calendar\CalendarWriter;
 
+/**
+ * Calendar Listener
+ * @author h.botev
+ *
+ */
 class CalendarListener
 {
     /**
@@ -39,7 +44,7 @@ class CalendarListener
         $event = $event->getEvent();
 
         if ($event instanceof \Google_Service_Calendar_Event) {
-            $result = $this->calendarWriter->saveEvent($event);
+            $this->calendarWriter->saveEvent($event);
         }
     }
 }
