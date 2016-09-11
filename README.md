@@ -9,7 +9,7 @@ In order to get everything working, you need to:
 
 1. Clone this repo and ResumeProjectAPI
 2. Run composer install to both projects
-3. Use the virtual hosts found in '_docs' folder to actually create the vhosts
+3. Use the virtual hosts found in '_docs' folder to create the vhosts
 4. While in ResumeProjectMain folder, run 'php app/console doctrine:migrations:migrate' to set a basic database with group permissions and some dummy data for testing (*not really up to date go to 4 of "Things that I know are missing:"*)
 5. Log in with your google account to be able to use all features. (just click on "OR LOGIN WITH Google")
 6. If any questions arise you can comment here, write to my email or call
