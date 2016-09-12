@@ -20,5 +20,5 @@ Things that I know are missing:
 made with you as a doctor - apps for you to approve or deny)
 
 2. Doctors can rate themselves.
-3. Registering users is available but it doesn't have any design, and users don't get any permissions(if you log in with google account you don't need to register manually).
+3. Registering users is available but only as patients (doctor role should be given by administrator).
 4. Doctrine migrations don't cover all the data in the DB (there's a DB dump in the _docs folder)
