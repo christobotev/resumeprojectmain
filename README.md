@@ -16,9 +16,6 @@ In order to get everything working, you need to:
 
 Things that I know are missing:
 
-1. Doctors can also create appointments with other doctors(which they can't see, because if you are a doctor you only see appointments
-made with you as a doctor - apps for you to approve or deny)
-
-2. Doctors can rate themselves.
-3. Registering users is available but only as patients (doctor role should be given by administrator).
-4. Doctrine migrations don't cover all the data in the DB (there's a DB dump in the _docs folder)
+1. Registering users is available but only as patients (doctor role should be given by administrator).
+2. Doctrine migrations don't cover all the data in the DB (there's a DB dump in the _docs folder)
+3. Doctors can not create reminders for themselves.
