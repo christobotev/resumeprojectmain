@@ -199,6 +199,10 @@ services:
         class: Docs\MainBundle\Appointment\UpdateStatus\ToApprove
         arguments: ["@google.calendar_service", "@google.client", "@repository.appointment", "@docs.reference_factory", "@event_dispatcher", "@calendar.writer"]
 
+    appointment.toClose:
+        class: Docs\MainBundle\Appointment\UpdateStatus\ToClose
+        arguments: ["@repository.appointment", "@docs.reference_factory"]
+
     form.reminder_form_helper:
       class: Docs\MainBundle\Reminder\ReminderFormHelper
       arguments: ["@service_container"]

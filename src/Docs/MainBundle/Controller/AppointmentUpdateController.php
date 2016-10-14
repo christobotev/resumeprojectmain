@@ -5,6 +5,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use HWI\Bundle\OAuthBundle\Security\Core\Authentication\Token\OAuthToken;
 
+/**
+ * Controller that takes care of
+ * Approvement/Declinement of appointments
+ * @author h.botev
+ */
 class AppointmentUpdateController extends Controller
 {
     /**
@@ -38,6 +43,32 @@ class AppointmentUpdateController extends Controller
         }
 
         return $this->redirect($this->generateUrl('manageAppointments'));
+    }
 
+    /**
+     * Decline appointment
+     * @param Request $request
+     */
+    public function declineAction(Request $request)
+    {
+        $approvementManager = $this->get('appointment.toClose');
+        /* @var $approvementManager \Docs\MainBundle\Appointment\UpdateStatus\ToClose */
+
+        try {
+            $flashBag = $this->get("session")->getFlashBag();
+            $approvementManager->updateAppointment($request->get('appointmentID'));
+
+            $flashBag->add(
+                'success',
+                'Appointment saved successfully!'
+                );
+        } catch (\Exception $e) {
+            $flashBag->add(
+                'error',
+                'Appointment could not be saved at this time, please try again!'
+                );
+        }
+
+        return $this->redirect($this->generateUrl('manageAppointments'));
     }
 }

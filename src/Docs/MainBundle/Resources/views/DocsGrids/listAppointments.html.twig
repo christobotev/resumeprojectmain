@@ -86,7 +86,7 @@
                         {% endif %}
                         {% if not isClosed(appointment.status.getStatusID) %}
                             <span class="larger-icon-container" >
-                                <a href id="cancelAppointment" class="btn btn-xs btn-danger" aria-hidden="true" data-url="{{ path("toClose", {"appointmentID" : appointment.appointmentID, "status" : closed}) }}">{{ 'Decline' }}</a>
+                                <a href="{{ path("toClose", {"appointmentID" : appointment.appointmentID}) }}" class="btn btn-xs btn-danger" aria-hidden="true" >{{ 'Decline' }}</a>
                             </span>
                         {% endif %}
                     </td>

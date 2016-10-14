@@ -57,9 +57,11 @@
                     <td>{{ reminder.note }}</td>
                     {% endautoescape %}
                     <td>
+                    {% if not isDoc(app.user.roles) %}
                         <a href="{{ path("docMain", {"userID" : reminder.userID}) }}">
                             <span data-content="Go to  the M.D. Profile" rel="popover" data-placement="bottom" data-trigger="hover" class="glyphicon glyphicon-home docProfilePopover"></span>
                         </a>
+                    {% endif %}
                     </td>
                 </tr>
                 {% endfor %}

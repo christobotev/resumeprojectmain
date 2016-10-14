@@ -86,4 +86,4 @@ toApprove:
 
 toClose:
     path: /closeAppointment
-    defaults: {_controller: "MainBundle:AppointmentUpdate:close"}
+    defaults: {_controller: "MainBundle:AppointmentUpdate:decline"}

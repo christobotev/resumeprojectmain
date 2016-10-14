@@ -63,14 +63,17 @@
                     <td>{{ user.firstName }}</td>
                     <td>{{ user.lastName }}</td>
                     <td>{{ 'empty' }}</td>
-                    <td>
-						{{ 'new rating' }}
+                    <td>{{ 'new rating' }}</td>
                     <td>{{ user.created | localizedate('medium', 'none') }}</td>
                     {% endautoescape %}
                     <td>
-                        <a href="{{ path("docMain", {"userID" : user.userID}) }}">
-                            <span data-content="Go to  the M.D. Profile" rel="popover" data-placement="bottom" data-trigger="hover" class="glyphicon glyphicon-home docProfilePopover"></span>
-                        </a>
+                        {% if isDoc(app.user.roles) %}
+                            <span class="glyphicon glyphicon-home docProfilePopover"></span>
+                        {% else %}
+                            <a href="{{ path("docMain", {"userID" : user.userID}) }}">
+                                <span data-content="Go to  the M.D. Profile" rel="popover" data-placement="bottom" data-trigger="hover" class="glyphicon glyphicon-home docProfilePopover"></span>
+                            </a>
+                        {% endif %}
                     </td>
                 </tr>
                 {% endfor %}

@@ -9,6 +9,8 @@ namespace Docs\MainBundle\Appointment\UpdateStatus;
 interface AppointmentStatusUpdaterInterface
 {
     /**
+     * Manage anything additional before
+     * calling the abstract changeStatus
      * @param string $appointmentID
      */
     public function updateAppointment($appointmentID);
