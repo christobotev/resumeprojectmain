@@ -50,16 +50,18 @@ class PermissionManager implements PermissionManagerInterface
 
     /**
      * Init the permission manager
-     * @param unknown $roleID
+     * @param aray $roleNames
      */
-    public function init($roleName)
+    public function init(array $roleNames)
     {
         if ($this->isInitialized) {
             return;
         }
 
         if ($this->fromCache) {
-            $this->loadFromCache($roleName);
+            foreach ($roleNames as $roleName) {
+                $this->loadFromCache($roleName);
+            }
         } else {
             $this->load($roleName);
         }
