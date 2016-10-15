@@ -1,6 +1,12 @@
 {% extends 'MainBundle:Default:index.html.twig' %}
 
+{% block javascripts %}
+{{ parent() }}
+<script src="{{ asset('/scripts/js/add-reminder.js') }}"> </script>
+{% endblock %}
+
 {% block content %}
+    {% include('MainBundle:Reminder:addReminderModal.html.twig') %}
     {% embed 'MainBundle:Grid:basicGrid.html.twig' %}
         {% block filters %}
         <!-- Search -->
@@ -58,6 +64,7 @@
                     {% endautoescape %}
                     <td>
                     {% if not isDoc(app.user.roles) %}
+                        {% set url = path("addReminder") %}
                         <a href="{{ path("docMain", {"userID" : reminder.userID}) }}">
                             <span data-content="Go to  the M.D. Profile" rel="popover" data-placement="bottom" data-trigger="hover" class="glyphicon glyphicon-home docProfilePopover"></span>
                         </a>
@@ -68,6 +75,16 @@
             </tbody>
 
         </table>
+        {% endblock %}
+
+        {% block tableActions %}
+            {% set url = path("addReminder") %}
+            <a href class="glyphicon glyphicon-pencil" aria-hidden="true"
+                data-url="{{ url }}"
+                data-toggle="modal"
+                data-user="app.user.userID"
+                data-target="#createReminder">
+            </a>
         {% endblock %}
     {% endembed %}
 {% endblock %}

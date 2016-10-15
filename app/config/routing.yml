@@ -87,3 +87,7 @@ toApprove:
 toClose:
     path: /closeAppointment
     defaults: {_controller: "MainBundle:AppointmentUpdate:decline"}
+
+addReminder:
+    path: /addReminder
+    defaults: {_controller: "MainBundle:Reminders:addReminderModal"}
