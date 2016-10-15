@@ -18,4 +18,3 @@ Things that I know are missing:
 
 1. Registering users is available but only as patients (doctor role should be given by administrator).
 2. Doctrine migrations don't cover all the data in the DB (there's a DB dump in the _docs folder)
-3. Doctors can not create reminders for themselves.
