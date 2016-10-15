@@ -59,12 +59,14 @@ class ControllerActionVoter implements VoterInterface
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
-        // currently users only have one role
         $roles = $token->getRoles();
-        $role = current($roles);
 
-        $this->pm->init($role->getRole());
+        $roleNames = [];
+        foreach ($roles as $role) {
+            $roleNames[] = $role->getRole();
+        }
 
+        $this->pm->init($roleNames);
         if ($this->pm->isAllowed($this->getResourceName($object))) {
             return VoterInterface::ACCESS_GRANTED;
         }
