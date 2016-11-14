@@ -28,14 +28,25 @@ class Version20161015213759 extends AbstractMigration
 
         $resource = $resource->fetch(\PDO::FETCH_ASSOC);
 
-        // 5 - Doctors
-        $this->connection->insert(
-            'RoleResources',
-            array('rights' => NULL,
-                'roleID' =>'5',
-                'resourceID' => $resource['resourceID']
-            )
-        );
+        $roles = $this->connection->executeQuery("
+                SELECT
+                     roleID
+                FROM
+                    Roles
+                WHERE
+                    1
+        ");
+
+        $roles = $roles->fetchAll(\PDO::FETCH_ASSOC);
+        foreach ($roles as $r) {
+            $this->connection->insert(
+                'RoleResources',
+                ['rights' => NULL,
+                    'roleID' => $r['roleID'],
+                    'resourceID' => $resource['resourceID']
+                ]
+            );
+        }
     }
 
     /**
